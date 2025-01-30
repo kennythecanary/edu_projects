@@ -157,8 +157,7 @@ class MyStyleGANa:
 
 
     def _hyperopt_objective(self, params, target, z_samples, lr, fmin_steps):
-    	"""	Fuction to minimize
-    	"""
+        """ Function to minimize at the layer selection phase """
         running_loss = 0.
         
         for _ in range(z_samples):
@@ -294,8 +293,7 @@ def generate(
 	image_path, source, target, n_samples, batch_size, num_steps, lr, fmin_steps, fmin_evals, patience, 
 	z_samples, display, outdir, save_freq, ckpt_path
 ):
-	""" Generate images based on source image and text domains 
-	"""
+	""" Generate images based on source image and text domains """
 	dataset = FFHQDs(image_path, n_samples)
 	dataloader = DataLoader(dataset, batch_size=batch_size)
 	
