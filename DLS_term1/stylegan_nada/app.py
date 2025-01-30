@@ -69,7 +69,7 @@ class DirectionalCLIPLoss(torch.nn.Module):
 
 
 class FFHQDs(Dataset):
-    def __init__(self, image_dir, n_samples, align=True):
+    def __init__(self, image_dir, n_samples=None, align=True):
         super().__init__()
         self.image_dir = image_dir
         files = [f for f in sorted(os.listdir(image_dir))]
