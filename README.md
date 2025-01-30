@@ -1,1 +1,1 @@
-# ed_projects
+# edu_projects
