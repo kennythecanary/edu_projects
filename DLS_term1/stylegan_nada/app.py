@@ -259,7 +259,7 @@ class MyStyleGANa:
 
 
     def _save_images(self, train_loader, step, outdir):
-        for d, images in enumerate(train_loader):
+        for d, images in enumerate(tqdm(train_loader, desc="Saving images", leave=False)):
             with torch.no_grad():
                 w = self.encode_images(images)
             generated_img = self.G.synthesis(w, noise_mode="const", force_fp32=True)
@@ -284,7 +284,7 @@ class MyStyleGANa:
 @click.option("--fmin_evals", type=int, help="Maximum of evaluations at the 1st phase", default=10)
 @click.option("--patience", type=int, help="Early stopping rounds at the 1st phase", default=5)
 @click.option("--z_samples", type=int, help="Number of samples at the 1st phase", default=3)
-@click.option("--display", type=bool, help="Display generated and source image during training", default=False)
+@click.option("--display", type=bool, help="Display generated and source images during training", default=False)
 @click.option("--outdir", type=str, help="Path to output images", metavar="DIR", default=None)
 @click.option("--save_freq", type=int, help="How often to save output images", default=1)
 @click.option("--ckpt_path", type=str, help="Checkpoint path", default="G_ckpt.pt")
