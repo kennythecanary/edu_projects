@@ -1,9 +1,12 @@
 # DLS Final Project 2024 | StyleGAN-NADA Reimplementation
 
+Optimization: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1KN9XO7adMwPIhdkBcBQfHbKaMoehfwZP?usp=sharing)
+
 ### Based on
 1\. [StyleGAN2-ADA - Official PyTorch implementation](https://github.com/NVlabs/stylegan2-ada-pytorch/tree/main)<br>
 2\. [encoder4editing](https://github.com/omertov/encoder4editing)<br>
 3\. [StyleGAN-NADA: CLIP-Guided Domain Adaptation of Image Generators](https://arxiv.org/pdf/2108.00946)<br>
+
 
 ### Setup
 ```.bash
