@@ -10,25 +10,15 @@ Optimize and convert: [![Open In Colab](https://colab.research.google.com/assets
 
 ### Setup
 ```.bash
-git init stylegan
-cd stylegan
+git init final_project
+cd final_project
 git remote add -f origin https://github.com/kennythecanary/edu_projects.git
 git config core.sparseCheckout true
 echo "DLS_term1/stylegan_nada" >> .git/info/sparse-checkout
 git pull origin main
 cd DLS_term1/stylegan_nada
-git clone https://github.com/NVlabs/stylegan2-ada-pytorch.git
-git clone https://github.com/omertov/encoder4editing.git
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-wget https://nvlabs-fi-cdn.nvidia.com/stylegan2-ada-pytorch/pretrained/ffhq.pkl
-gdown 1O8OLrVNOItOJoNGMyQ8G8YRTeTYEfs0P
-wget http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2
-bzip2 -dk shape_predictor_68_face_landmarks.dat.bz2
-rm -f shape_predictor_68_face_landmarks.dat.bz2
-gdown --folder --remaining-ok https://drive.google.com/drive/folders/1QXnHIoc_dmgzSdZQmQJ1I3QNOrRd7CSD
-pip install gradio
+chmod u+x install.sh
+./install.sh
 ```
 
 ### Usage via Console
@@ -37,6 +27,7 @@ python app.py \
     --image_path 02000 \
     --source "photo" \
     --target "sketch" \
+    --n_samples 30 \
     --batch_size 4 \
     --num_steps 10 \
     --lr 0.002 \
