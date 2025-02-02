@@ -1,6 +1,6 @@
 # DLS Final Project 2024 | StyleGAN-NADA Reimplementation
 
-Optimization: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1KN9XO7adMwPIhdkBcBQfHbKaMoehfwZP?usp=sharing)
+Optimize and convert: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1KN9XO7adMwPIhdkBcBQfHbKaMoehfwZP?usp=sharing)
 
 ### Based on
 1\. [StyleGAN2-ADA - Official PyTorch implementation](https://github.com/NVlabs/stylegan2-ada-pytorch/tree/main)<br>
@@ -27,12 +27,14 @@ gdown 1O8OLrVNOItOJoNGMyQ8G8YRTeTYEfs0P
 wget http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2
 bzip2 -dk shape_predictor_68_face_landmarks.dat.bz2
 rm -f shape_predictor_68_face_landmarks.dat.bz2
+gdown --folder --remaining-ok https://drive.google.com/drive/folders/1QXnHIoc_dmgzSdZQmQJ1I3QNOrRd7CSD
+pip install gradio
 ```
 
-### Usage
+### Usage via Console
 ```.bash
 python app.py \
-    --image_path /path/to/ffhq_dataset/dir
+    --image_path 02000 \
     --source "photo" \
     --target "sketch" \
     --batch_size 4 \
@@ -42,6 +44,11 @@ python app.py \
     --fmin_evals 10 \
     --patience 5 \
     --z_samples 3 \
-    --outdir /path/to/output/dir \
+    --outdir /tmp/frames \
     --save_freq 1
+```
+
+### Usage via Local GUI
+```.bash
+python webapp.py
 ```
