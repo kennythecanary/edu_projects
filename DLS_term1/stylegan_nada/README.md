@@ -8,7 +8,6 @@ Optimize and convert: [![Open In Colab](https://colab.research.google.com/assets
 <img src=teaser.png />
 </p>
 
-
 ### Based on
 1\. [StyleGAN2-ADA - Official PyTorch implementation](https://github.com/NVlabs/stylegan2-ada-pytorch/tree/main)<br>
 2\. [encoder4editing](https://github.com/omertov/encoder4editing)<br>
@@ -48,4 +47,9 @@ python app.py \
 ### Usage via Local GUI
 ```.bash
 python webapp.py
+```
+
+### Docker
+```.bash
+docker run --gpus all -p 7860:7860 kennythecanary/stylegan2-nada
 ```
