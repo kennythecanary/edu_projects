@@ -2,12 +2,14 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from transformers import CLIPProcessor, CLIPModel
+from torch.nn.init import _calculate_fan_in_and_fan_out
+import math
 
 
 
 class SAEonCLIP(nn.Module):
     def __init__(self, clip_model: str, hook_layer: int, hook_module: str, expansion_factor: int, 
-                 centralize: bool = False, k: int = None, device: str = "cuda"
+                 geom_dec_bias: bool = False, k: int = None, device: str = "cuda"
         ):
         super().__init__()
         self.clip = CLIPModel.from_pretrained(clip_model).to(device).requires_grad_(False)
@@ -21,7 +23,7 @@ class SAEonCLIP(nn.Module):
         self.k = k
         activation_fun = nn.ReLU() if k is None else TopK(k)
         self.sae = SparseAutoEncoder(
-            activation_dim, activation_dim * expansion_factor, activation_fun, centralize).to(device)
+            activation_dim, activation_dim * expansion_factor, activation_fun, geom_dec_bias).to(device)
 
 
     def _hook(self, model, inputs, outputs):
@@ -54,7 +56,7 @@ class SAEonCLIP(nn.Module):
 
 
 class SparseAutoEncoder(nn.Module):
-    def __init__(self, activation_dim: int, dict_size: int, activation_fun: nn.Module, centralize: bool):
+    def __init__(self, activation_dim: int, dict_size: int, activation_fun: nn.Module, geom_dec_bias: bool):
         super().__init__()
         self.activation_dim = activation_dim
         self.dict_size = dict_size
@@ -63,9 +65,10 @@ class SparseAutoEncoder(nn.Module):
         self.encoder = nn.Linear(activation_dim, dict_size, bias=True)
         self.decoder = nn.Linear(dict_size, activation_dim, bias=True)
 
-        self.centralize = centralize
-        if centralize:
-            self.b_dec = nn.Parameter(torch.zeros(dict_size))
+        if geom_dec_bias:
+            fan_in, _ = _calculate_fan_in_and_fan_out(self.decoder.weight)
+            bound = 1 / math.sqrt(fan_in)
+            nn.init.uniform_(self.decoder.bias, -bound, bound)
 
     
     def encode(self, activations: torch.Tensor) -> torch.Tensor:
@@ -73,9 +76,6 @@ class SparseAutoEncoder(nn.Module):
     
     
     def decode(self, activations: torch.Tensor) -> torch.Tensor:
-        if self.centralize:
-            activations = activations - self.b_dec
-        
         return self.decoder(activations)
 
     
