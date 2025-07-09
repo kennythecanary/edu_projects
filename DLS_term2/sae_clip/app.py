@@ -187,10 +187,14 @@ with tab_3:
     if image is not None:
         st.image(image)
         inputs = {"label": "none", "image": Image.open(image)}
-
-        device_id = 1 if torch.cuda.is_available() else 0
-        device = st.radio("Device:", ["cpu", "cuda"], index=device_id, horizontal=True)
-        model = fetch_model(**params, device=device)
+        
+        try:
+            model = fetch_model(**params, device="cuda")
+            device = st.radio("Device:", ["cpu", ":rainbow[cuda]"], index=1, horizontal=True)
+        except torch.OutOfMemoryError:
+            model = fetch_model(**params, device="cpu")
+            device = st.radio("Device:", ["cpu", "cuda"], index=0, horizontal=True, disabled=True)
+        
         with torch.no_grad():
             representation, activations, reconstruction = model.encode(inputs)
         
